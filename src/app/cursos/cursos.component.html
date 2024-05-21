@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-header">
+        Listado de cursos
+    </div>
+    <ul class="list-group">
+        @for (curso of listaCursos; track $index) {
+            <li class="list-group-item">{{curso}}</li>
+        } 
+    </ul>
+</div>
