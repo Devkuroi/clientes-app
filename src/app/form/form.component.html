@@ -1,0 +1,15 @@
+<form class="bg-dark p-5" [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3 w-50">
+      <label for="exampleInputPassword1" class="form-label text-white">Nombre</label>
+      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="nombre">
+    </div>
+    <div class="mb-3 w-50">
+      <label for="exampleInputPassword1" class="form-label text-white">Apellido</label>
+      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="apellido">
+    </div>
+    <div class="mb-3 w-50">
+      <label for="exampleInputEmail1" class="form-label text-white">Email </label>
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
+    </div>
+    <button type="submit" class="btn btn-outline-primary">Crear</button>
+  </form>

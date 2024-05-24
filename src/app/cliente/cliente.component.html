@@ -1,9 +1,12 @@
-<div class="card text-bg-primary mb-3">
+<div class="card text-bg-dark mb-3">
   <div class="card-header">Clientes</div>
   <div class="card-body">
     <h5 class="card-title">listado de Clientes</h5>
+    <div class="my-4 text-left">
+      <button class="btn btn-rounded btn-primary" [routerLink] = "['/clientes/form']">Crear Cliente</button>
+    </div>
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-dark border-primary table-bordered table-striped">
       <thead>
         <tr>
           <th>id</th>
@@ -21,6 +24,9 @@
           <td>{{ cliente.apellido }}</td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.createAt }}</td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm" [routerLink] = "['/clientes/form', cliente.id]">Editar</button>
+          </td>
         </tr>
         }
       </tbody>
