@@ -1,15 +1,55 @@
-<form class="bg-dark p-5" [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+  @if (this.errors.length > 0) {
+      <ul class="alert alert-danger m-3">
+        @for(error of errors; track errors.length) {
+          <li>{{ error }}</li>
+        }
+      </ul>
+  }
+  <form class="bg-dark p-5" [formGroup]="clienteForm" (ngSubmit)="createOrUpdate()">
     <div class="mb-3 w-50">
       <label for="exampleInputPassword1" class="form-label text-white">Nombre</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="nombre">
+      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="nombre" [required]="true" [minlength]="4">
     </div>
+    @if (clienteForm.get('nombre')?.invalid && (clienteForm.get('nombre')?.dirty || clienteForm.get('nombre')?.touched)) {
+      <div class="alert alert-danger">
+        @if (clienteForm.get('nombre')?.errors?.['required']) {
+          El nombre es obligatorio
+        }
+        @if (clienteForm.get('nombre')?.errors?.['minlength']) {
+          El nombre debe contener al menos 4 caracteres
+        }
+      </div>
+    }
     <div class="mb-3 w-50">
-      <label for="exampleInputPassword1" class="form-label text-white">Apellido</label>
-      <input type="text" class="form-control" id="exampleInputPassword1" formControlName="apellido">
+      <label for="exampleInputPassword" class="form-label text-white">Apellido</label>
+      <input type="text" class="form-control" id="exampleInputPassword" formControlName="apellido" [required]="true" [minlength]="4">
     </div>
+    @if (clienteForm.get('apellido')?.invalid && (clienteForm.get('apellido')?.dirty || clienteForm.get('apellido')?.touched)) {
+      <div class="alert alert-danger">
+        @if (clienteForm.get('apellido')?.errors?.['required']) {
+          El apellido es obligatorio
+        }
+        @if (clienteForm.get('apellido')?.errors?.['minlength']) {
+          El apellido debe contener al menos 4 caracteres
+        }
+      </div>
+    }
     <div class="mb-3 w-50">
       <label for="exampleInputEmail1" class="form-label text-white">Email </label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email">
+      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" formControlName="email" [required]="true" [minlength]="4" [email]="true">
     </div>
-    <button type="submit" class="btn btn-outline-primary">Crear</button>
+    @if (clienteForm.get('email')?.invalid && (clienteForm.get('email')?.dirty || clienteForm.get('email')?.touched)) {
+      <div class="alert alert-danger">
+        @if (clienteForm.get('email')?.errors?.['required']) {
+          El email es obligatorio
+        }
+        @if (clienteForm.get('email')?.errors?.['minlength']) {
+          El email debe contener al menos 4 caracteres
+        }
+        @if (clienteForm.get('email')?.errors?.['email']) {
+          El email debe ser válido
+        }
+      </div>
+    }
+      <button type="submit" class="btn btn-primary" [disabled]="clienteForm.invalid">{{ nameButton }}</button>
   </form>
