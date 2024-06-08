@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
+import { formatDate, registerLocaleData } from '@angular/common';
+import localeES from '@angular/common/locales/es-CO';
 import { Cliente } from '../cliente/cliente';
-import { Observable, catchError, throwError} from 'rxjs';
+import { Observable, catchError, map, throwError} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -17,7 +19,17 @@ export class ClienteService {
   private headers = new HttpHeaders({'Content-Type': 'application/json'})
 
   getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.url)
+    return this.http.get<Cliente[]>(this.url).pipe(
+      map( response => {
+        let clientes = response as Cliente[]
+        return clientes.map(cliente => {
+          registerLocaleData(localeES, 'es');
+          cliente.nombre = cliente.nombre.toUpperCase();
+          cliente.createAt = formatDate(cliente.createAt! ,'fullDate', 'es')
+          return cliente
+        })
+      })
+    )
   }
 
   getCliente(id: number): Observable<Cliente> {
