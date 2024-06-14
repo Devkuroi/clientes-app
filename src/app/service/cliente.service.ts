@@ -1,8 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { formatDate, registerLocaleData } from '@angular/common';
-import localeES from '@angular/common/locales/es-CO';
 import { Cliente } from '../cliente/cliente';
-import { Observable, catchError, map, throwError} from 'rxjs';
+import { Observable, catchError, tap, throwError} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -15,19 +13,27 @@ export class ClienteService {
   private http: HttpClient = inject(HttpClient);
   private router: Router = inject(Router);
 
-  private url = "http://localhost:8080/api/clientes"
-  private headers = new HttpHeaders({'Content-Type': 'application/json'})
+  private url = "http://localhost:8080/api/clientes";
+  private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
+  //es importante el orden de los operadores ya que si se ejecuta uno primero que otro el primero podria afectar al otro
+  // ademas se puede poner varios tap
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.url).pipe(
-      map( response => {
-        let clientes = response as Cliente[]
-        return clientes.map(cliente => {
-          registerLocaleData(localeES, 'es');
-          cliente.nombre = cliente.nombre.toUpperCase();
-          cliente.createAt = formatDate(cliente.createAt! ,'fullDate', 'es')
-          return cliente
-        })
+      tap(response => {
+        let clientes = response as Cliente[];
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        });
+      }),
+      catchError(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al cargar los clientes',
+          text: error.error.message,
+          showConfirmButton: true
+        });
+        return throwError(() => error.error.message);
       })
     )
   }

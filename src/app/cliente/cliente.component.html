@@ -27,10 +27,10 @@
         @for (cliente of clientes; track $index) {
         <tr>
           <td>{{ cliente.id }}</td>
-          <td>{{ cliente.nombre }}</td>
-          <td>{{ cliente.apellido }}</td>
+          <td>{{ cliente.nombre | uppercase }}</td>
+          <td>{{ cliente.apellido | uppercase }}</td>
           <td>{{ cliente.email }}</td>
-          <td>{{ cliente.createAt }}</td>
+          <td>{{ cliente.createAt | date: 'fullDate' }}</td>
           <td>
             <button type="button" class="btn btn-primary btn-sm" [routerLink] = "['/clientes/form', cliente.id]">Editar</button>
           </td>

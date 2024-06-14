@@ -3,11 +3,13 @@ import { Cliente } from './cliente';
 import { ClienteService } from '../service/cliente.service';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DatePipe, UpperCasePipe } from '@angular/common';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-cliente',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, UpperCasePipe, DatePipe],
   templateUrl: './cliente.component.html',
 })
 export class ClienteComponent implements OnInit {
@@ -16,7 +18,14 @@ export class ClienteComponent implements OnInit {
   constructor(private clienteService: ClienteService) {}
 
   ngOnInit(): void {
-    this.clienteService.getClientes().subscribe(
+    this.clienteService.getClientes().pipe(
+      tap(clientes => {
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        })
+      })
+    )
+    .subscribe(
       clientes => this.clientes = clientes
     );
   }
