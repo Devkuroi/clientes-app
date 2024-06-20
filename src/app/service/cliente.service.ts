@@ -21,7 +21,7 @@ export class ClienteService {
   getClientes(page: number): Observable<any> {
     return this.http.get(this.url + '/page/' + page).pipe(
       map((response: any) => { 
-        return response.content as Cliente[]
+        return response as Cliente[]
       }),
       catchError(error => {
         Swal.fire({

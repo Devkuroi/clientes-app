@@ -41,6 +41,9 @@
         }
       </tbody>
     </table>
+    @if(paginator) {
+      <paginator-nav [paginador] = "paginator"></paginator-nav>
+    }
     }
   </div>
 </div>

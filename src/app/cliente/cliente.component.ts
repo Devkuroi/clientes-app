@@ -1,26 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from '../service/cliente.service';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatePipe, UpperCasePipe } from '@angular/common';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 @Component({
   selector: 'app-cliente',
   standalone: true,
-  imports: [RouterLink, UpperCasePipe, DatePipe],
+  imports: [RouterLink, UpperCasePipe, DatePipe, PaginatorComponent],
   templateUrl: './cliente.component.html',
 })
 export class ClienteComponent implements OnInit {
   clientes: Cliente[] = []
+  paginator: any;
 
-  constructor(private clienteService: ClienteService) {}
+
+  private clienteService: ClienteService = inject(ClienteService);
+  private activeRoute: ActivatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void {
     let page = 0;
+    this.activeRoute.params.subscribe(params => {
+      page = params['page'] ?? 0;
+    });
     this.clienteService.getClientes(page).subscribe(
       response => {
-        this.clientes = response
+        this.clientes = response.content
+        this.paginator = response;
+        console.log(this.paginator);
       }
     );
   }
