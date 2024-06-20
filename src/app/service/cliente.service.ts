@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Cliente } from '../cliente/cliente';
-import { Observable, catchError, tap, throwError} from 'rxjs';
+import { Observable, catchError, map, tap, throwError} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -18,13 +18,10 @@ export class ClienteService {
 
   //es importante el orden de los operadores ya que si se ejecuta uno primero que otro el primero podria afectar al otro
   // ademas se puede poner varios tap
-  getClientes(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(this.url).pipe(
-      tap(response => {
-        let clientes = response as Cliente[];
-        clientes.forEach(cliente => {
-          console.log(cliente.nombre);
-        });
+  getClientes(page: number): Observable<any> {
+    return this.http.get(this.url + '/page/' + page).pipe(
+      map((response: any) => { 
+        return response.content as Cliente[]
       }),
       catchError(error => {
         Swal.fire({

@@ -4,7 +4,6 @@ import { ClienteService } from '../service/cliente.service';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatePipe, UpperCasePipe } from '@angular/common';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-cliente',
@@ -18,15 +17,11 @@ export class ClienteComponent implements OnInit {
   constructor(private clienteService: ClienteService) {}
 
   ngOnInit(): void {
-    this.clienteService.getClientes().pipe(
-      tap(clientes => {
-        clientes.forEach(cliente => {
-          console.log(cliente.nombre);
-        })
-      })
-    )
-    .subscribe(
-      clientes => this.clientes = clientes
+    let page = 0;
+    this.clienteService.getClientes(page).subscribe(
+      response => {
+        this.clientes = response
+      }
     );
   }
 

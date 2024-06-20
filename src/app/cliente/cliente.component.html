@@ -5,7 +5,7 @@
     <div class="my-4 text-left">
       <button class="btn btn-rounded btn-primary" [routerLink] = "['/clientes/form']">Crear Cliente</button>
     </div>
-    @if (clientes.length == 0) {
+    @if (this.clientes.length == 0) {
       <div class="alert alert-info" role="alert">
         No hay clientes registrados
       </div>
