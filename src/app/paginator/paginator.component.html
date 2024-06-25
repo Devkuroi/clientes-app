@@ -1,7 +1,44 @@
 @if(pages.length > 0) {
-    <ul class="">
-        @for(numPage of pages; track $index) {
-            <li>{{ numPage }}</li>
-        }
-    </ul>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li>
+                @if(paginador.page.number > 0) {
+                    <a class="page-link" [routerLink]="['/clientes/page', paginador.page.number-1]" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                }
+            </li>
+            <li>
+                @if(paginador.page.number != 0) {
+                    <a class="page-link" [routerLink]="['/clientes/page', 0]" aria-label="Frist">
+                        <span aria-hidden="true">Primera</span>
+                    </a>
+                }
+            </li>
+            @for(numPage of pages; track $index) {
+                <li class="page-item">
+                    @if (numPage-1 == paginador.page.number) {
+                        <span class="page-link active">{{ numPage }}</span>
+                    }
+                    @if (numPage-1 != paginador.page.number) {
+                        <a class="page-link" [routerLink] = "['/clientes/page', numPage-1]"> {{ numPage }}</a>
+                    }
+                </li>
+            }
+            <li>
+                @if(paginador.page.number+1 != paginador.page.totalPages) {
+                    <a class="page-link" [routerLink]="['/clientes/page', paginador.page.totalPages-1]" aria-label="Frist">
+                        <span aria-hidden="true">Ultima</span>
+                    </a>
+                }
+            </li>
+            <li>
+                @if(paginador.page.number+1 != paginador.page.totalPages) {
+                    <a class="page-link" [routerLink]="['/clientes/page', paginador.page.number+1]" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                }
+            </li>
+        </ul>
+    </nav>
 }

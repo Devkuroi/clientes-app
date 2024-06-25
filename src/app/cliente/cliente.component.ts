@@ -24,14 +24,16 @@ export class ClienteComponent implements OnInit {
     let page = 0;
     this.activeRoute.params.subscribe(params => {
       page = params['page'] ?? 0;
+      
+      this.clienteService.getClientes(page).subscribe(
+        response => {
+          this.clientes = response.content
+          console.log(response)
+          this.paginator = response;
+        }
+      );
     });
-    this.clienteService.getClientes(page).subscribe(
-      response => {
-        this.clientes = response.content
-        this.paginator = response;
-        console.log(this.paginator);
-      }
-    );
+    
   }
 
   deleteCliente(cliente: Cliente): void {

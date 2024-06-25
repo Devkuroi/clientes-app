@@ -1,6 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ClienteService } from '../service/cliente.service';
 import { Cliente } from '../cliente/cliente';
+import {ChangeDetectionStrategy} from '@angular/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {
   FormControl,
   FormGroup,
@@ -13,7 +17,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatDatepickerModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './form.component.html',
   styleUrl: './form.component.css',
 })
@@ -36,6 +41,10 @@ export class FormComponent implements OnInit {
       Validators.email,
       Validators.nullValidator
     ]),
+    createAt: new FormControl('', [
+      Validators.required,
+      Validators.nullValidator
+    ])
   });
 
   cliente: Cliente = {
@@ -53,6 +62,7 @@ export class FormComponent implements OnInit {
       nombre: this.clienteForm.value.nombre ?? '',
       apellido: this.clienteForm.value.apellido ?? '',
       email: this.clienteForm.value.email ?? '',
+      createAt: this.clienteForm.value.createAt!
     }
 
     this.clienteService.create(this.cliente).subscribe({
@@ -92,6 +102,7 @@ export class FormComponent implements OnInit {
       nombre: this.clienteForm.value.nombre ?? '',
       apellido: this.clienteForm.value.apellido ?? '',
       email: this.clienteForm.value.email ?? '',
+      createAt: this.clienteForm.value.createAt!
     }
     this.clienteService.updateCliente(this.cliente).subscribe({
       next: (cliente) => {

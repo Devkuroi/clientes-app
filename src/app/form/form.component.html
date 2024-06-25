@@ -51,5 +51,21 @@
         }
       </div>
     }
+    <div class="mb-3 w-50">
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" class="form-control" id="exampleInputDate" formControlName="createAt" [required]="true">
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    @if (clienteForm.get('createAt')?.invalid && (clienteForm.get('createAt')?.dirty || clienteForm.get('createAt')?.touched)) {
+      <div class="alert alert-danger">
+        @if (clienteForm.get('createAt')?.errors?.['required']) {
+          La fecha es obligatorio
+        }
+      </div>
+    }
       <button type="submit" class="btn btn-primary" [disabled]="clienteForm.invalid">{{ nameButton }}</button>
   </form>
